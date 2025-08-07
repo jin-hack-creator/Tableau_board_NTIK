@@ -1,112 +1,128 @@
-import { supabase } from './supabaseClient';
-import { useState } from 'react';
 
-export default function Login() {
-  const [adminName, setAdminName] = useState('');
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from './supabaseClient';
+import './Login.css';
+
+const Login = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    // On construit l'email à partir du nom d'admin
-    const email = `${adminName}@gmail.com`;
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setError(error.message);
+    setSuccess('');
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     setLoading(false);
+    if (error) {
+      setError(error.message);
+    } else {
+      setSuccess('Connexion réussie !');
+      setTimeout(() => navigate('/'), 800);
+    }
+  };
+
+  const handleForgot = async (e) => {
+    e.preventDefault();
+    setError('');
+    setResetSent(false);
+    if (!email) {
+      setError('Veuillez entrer votre email pour réinitialiser.');
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) {
+      setError(error.message);
+    } else {
+      setResetSent(true);
+    }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      width: '100vw',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #10182a 60%, #1a2236 100%)',
-      padding: '0 8px'
-    }}>
+    <div className="login-container">
       <form
-        onSubmit={handleLogin}
-        style={{
-          background: '#181f36',
-          borderRadius: 16,
-          boxShadow: '0 4px 32px #0008',
-          padding: '32px 20px',
-          width: '100%',
-          maxWidth: 350,
-          minWidth: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 16,
-          border: '1.5px solid #223',
-        }}
+        onSubmit={showForgot ? handleForgot : handleSubmit}
+        className="login-form"
+        aria-label={showForgot ? 'Formulaire de réinitialisation' : 'Formulaire de connexion'}
       >
-        <h2 style={{
-          color: '#e94560',
-          textAlign: 'center',
-          marginBottom: 8,
-          letterSpacing: 1
-        }}>Connexion Admin NTIK</h2>
-        <input
-          type="text"
-          placeholder="Nom d'administrateur"
-          value={adminName}
-          onChange={e => setAdminName(e.target.value)}
-          required
-          autoCapitalize="off"
-          autoCorrect="off"
-          style={{
-            padding: '12px 14px',
-            borderRadius: 8,
-            border: '1.5px solid #223',
-            background: '#10182a',
-            color: '#f3f6fa',
-            fontSize: 16,
-            outline: 'none',
-            marginBottom: 0
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-          style={{
-            padding: '12px 14px',
-            borderRadius: 8,
-            border: '1.5px solid #223',
-            background: '#10182a',
-            color: '#f3f6fa',
-            fontSize: 16,
-            outline: 'none',
-            marginBottom: 0
-          }}
-        />
+        <div className="login-header">
+          <img src="/vite.svg" alt="Logo" className="login-logo" />
+          <h2 className="login-title">Espace Admin</h2>
+          <span className="login-subtitle">Connexion sécurisée</span>
+        </div>
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            className="form-input"
+            autoFocus
+            autoComplete="username"
+            aria-label="Email"
+          />
+        </div>
+        {!showForgot && (
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">Mot de passe</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              className="form-input"
+              autoComplete="current-password"
+              aria-label="Mot de passe"
+            />
+          </div>
+        )}
+        {error && <div className="form-error">{error}</div>}
+        {success && <div className="form-success">{success}</div>}
+        {resetSent && <div className="form-info">Lien de réinitialisation envoyé !</div>}
         <button
           type="submit"
           disabled={loading}
-          style={{
-            background: loading ? '#e94560cc' : 'linear-gradient(90deg, #e94560 60%, #ff6a88 100%)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 8,
-            padding: '12px 0',
-            fontWeight: 600,
-            fontSize: 16,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            boxShadow: '0 2px 8px #e9456022',
-            transition: 'background 0.2s',
-            marginTop: 8
-          }}
+          className="submit-button"
+          aria-busy={loading}
         >
-          {loading ? 'Connexion...' : 'Se connecter'}
+          {showForgot ? (loading ? 'Envoi...' : 'Réinitialiser') : (loading ? 'Connexion...' : 'Se connecter')}
         </button>
-        {error && <div style={{ color: '#ff6a88', marginTop: 8, textAlign: 'center' }}>{error}</div>}
+        <div className="forgot-password-container">
+          {!showForgot ? (
+            <button
+              type="button"
+              onClick={() => { setShowForgot(true); setError(''); setResetSent(false); }}
+              className="forgot-password-button"
+            >
+              Mot de passe oublié ?
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => { setShowForgot(false); setError(''); setResetSent(false); }}
+              className="back-to-login-button"
+            >
+              Retour à la connexion
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );
-}
+};
+
+export default Login;

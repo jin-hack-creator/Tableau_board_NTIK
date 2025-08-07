@@ -19,9 +19,7 @@ export default function DetailEcole() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      // Récupère l'école
       const { data: ecoleData } = await supabase.from('schools').select('*').eq('id', id).single();
-      // Blocage automatique si paiement en retard
       let statut = ecoleData?.status;
       const { data: paiementsData } = await supabase.from('paiements').select('*').eq('school_id', id);
       if (paiementsData && paiementsData.some(p => p.statut === 'retard')) {
@@ -31,20 +29,18 @@ export default function DetailEcole() {
         }
       }
       setEcole({ ...ecoleData, status: statut });
-      // Utilisateurs
+
       const { data: usersData } = await supabase.from('users').select('*').eq('school_id', id);
       setUsers(usersData || []);
-      // Frais
+
       const { data: fraisData } = await supabase.from('frais').select('*').eq('school_id', id);
       setFrais(fraisData || []);
-      // Paiements
       setPaiements(paiementsData || []);
       setLoading(false);
     }
     fetchData();
   }, [id]);
 
-  // Blocage manuel
   async function handleBlock() {
     setUpdating(true);
     await supabase.from('schools').update({ status: 'bloqué' }).eq('id', id);
@@ -59,7 +55,7 @@ export default function DetailEcole() {
   }
 
   if (loading) return <div style={{textAlign:'center',marginTop:32}}>Chargement…</div>;
-  if (!ecole) return <div style={{textAlign:'center',marginTop:32,color:'#e94560'}}>École introuvable</div>;
+  if (!ecole) return <div style={{textAlign:'center',marginTop:32,color:'#3b82f6'}}>École introuvable</div>;
 
   return (
     <div style={{
@@ -70,10 +66,10 @@ export default function DetailEcole() {
       boxShadow: '0 12px 48px #000a',
       padding: '48px 40px',
       color: '#fff',
-      border: '2.5px solid #e94560',
+      border: '2.5px solid #3b82f6',
       marginTop: 32,
     }}>
-      <h2 style={{color:'#e94560',fontWeight:900,fontSize:28,letterSpacing:1,marginBottom:24}}>Fiche École</h2>
+      <h2 style={{color:'#3b82f6',fontWeight:900,fontSize:28,letterSpacing:1,marginBottom:24}}>Fiche École</h2>
       <div style={{display:'flex',gap:32,flexWrap:'wrap'}}>
         <section style={{flex:2,minWidth:320}}>
           <h3 style={{color:'#43e9e9',fontWeight:800,fontSize:20,marginBottom:12}}>Informations générales</h3>
@@ -81,7 +77,7 @@ export default function DetailEcole() {
           <div style={{fontSize:17,marginBottom:8}}><b>Adresse :</b> {ecole.address || '-'}</div>
           <div style={{fontSize:17,marginBottom:8}}><b>Téléphone :</b> {ecole.phone || '-'}</div>
           <div style={{fontSize:17,marginBottom:8}}><b>Email :</b> {ecole.email || '-'}</div>
-          <div style={{fontSize:17,marginBottom:8}}><b>Statut :</b> <span style={{color:'#fff',background:ecole.status==='bloqué'?'#e94560':'#43e9e9',borderRadius:8,padding:'2px 10px',fontWeight:700}}>{ecole.status==='bloqué'?'Bloqué':'Actif'}</span></div>
+          <div style={{fontSize:17,marginBottom:8}}><b>Statut :</b> <span style={{color:'#fff',background:ecole.status==='bloqué'?'#3b82f6':'#43e9e9',borderRadius:8,padding:'2px 10px',fontWeight:700}}>{ecole.status==='bloqué'?'Bloqué':'Actif'}</span></div>
         </section>
         <section style={{flex:3,minWidth:320}}>
           <h3 style={{color:'#43e9e9',fontWeight:800,fontSize:20,marginBottom:12}}>Utilisateurs liés</h3>
@@ -154,7 +150,7 @@ export default function DetailEcole() {
             ))}
           </ul>
           <button
-            style={{background:'#e94560',color:'#fff',border:'none',borderRadius:8,padding:'8px 18px',fontWeight:700,fontSize:16,marginTop:8,cursor:'pointer'}}
+            style={{background:'#3b82f6',color:'#fff',border:'none',borderRadius:8,padding:'8px 18px',fontWeight:700,fontSize:16,marginTop:8,cursor:'pointer'}}
             onClick={()=>setShowFraisModal(true)}
           >Ajouter un frais</button>
       {/* Modal ajout frais */}
@@ -181,16 +177,16 @@ export default function DetailEcole() {
             padding:'40px 32px',
             minWidth:340,
             display:'flex',flexDirection:'column',gap:18,
-            border:'2px solid #e94560',
+            border:'2px solid #3b82f6',
             color:'#fff',
             position:'relative',
           }}>
-            <h2 style={{marginBottom:12,fontWeight:800,fontSize:22,color:'#e94560'}}>Nouveau frais</h2>
-            <input required placeholder="Libellé" value={newFrais.label} onChange={e=>setNewFrais(s=>({...s,label:e.target.value}))} style={{padding:'12px 16px',borderRadius:18,border:'1.5px solid #e94560',fontSize:16,background:'#181f36',color:'#fff',outline:'none',fontWeight:600,marginBottom:2,boxShadow:'0 1px 6px #0002',transition:'border 0.18s'}}/>
-            <input required type="number" placeholder="Montant (FCFA)" value={newFrais.montant} onChange={e=>setNewFrais(s=>({...s,montant:e.target.value}))} style={{padding:'12px 16px',borderRadius:18,border:'1.5px solid #e94560',fontSize:16,background:'#181f36',color:'#fff',outline:'none',fontWeight:600,marginBottom:2,boxShadow:'0 1px 6px #0002',transition:'border 0.18s'}}/>
+            <h2 style={{marginBottom:12,fontWeight:800,fontSize:22,color:'#3b82f6'}}>Nouveau frais</h2>
+            <input required placeholder="Libellé" value={newFrais.label} onChange={e=>setNewFrais(s=>({...s,label:e.target.value}))} style={{padding:'12px 16px',borderRadius:18,border:'1.5px solid #3b82f6',fontSize:16,background:'#181f36',color:'#fff',outline:'none',fontWeight:600,marginBottom:2,boxShadow:'0 1px 6px #0002',transition:'border 0.18s'}}/>
+            <input required type="number" placeholder="Montant (FCFA)" value={newFrais.montant} onChange={e=>setNewFrais(s=>({...s,montant:e.target.value}))} style={{padding:'12px 16px',borderRadius:18,border:'1.5px solid #3b82f6',fontSize:16,background:'#181f36',color:'#fff',outline:'none',fontWeight:600,marginBottom:2,boxShadow:'0 1px 6px #0002',transition:'border 0.18s'}}/>
             <div style={{display:'flex',justifyContent:'flex-end',gap:12,marginTop:8}}>
               <button type="button" style={{background:'#222',color:'#fff',border:'none',borderRadius:18,padding:'10px 22px',fontWeight:700,fontSize:16,boxShadow:'none'}} onClick={()=>setShowFraisModal(false)}>Annuler</button>
-              <button type="submit" style={{background:'#e94560',color:'#fff',border:'none',borderRadius:18,padding:'10px 22px',fontWeight:700,fontSize:16,boxShadow:'0 2px 12px #e9456022'}} disabled={addingFrais}>{addingFrais ? 'Ajout...' : 'Ajouter'}</button>
+              <button type="submit" style={{background:'#3b82f6',color:'#fff',border:'none',borderRadius:18,padding:'10px 22px',fontWeight:700,fontSize:16,boxShadow:'0 2px 12px #3b82f622'}} disabled={addingFrais}>{addingFrais ? 'Ajout...' : 'Ajouter'}</button>
             </div>
           </form>
         </div>
@@ -263,7 +259,7 @@ export default function DetailEcole() {
                   <td style={{padding:'8px'}}>{p.trimestre || '-'}</td>
                   <td style={{padding:'8px'}}>{p.montant} FCFA</td>
                   <td style={{padding:'8px'}}>
-                    <span style={{background:p.statut==='payé'?'#43e9e9':'#e94560',color:p.statut==='payé'?'#181f36':'#fff',borderRadius:8,padding:'2px 10px',fontWeight:700}}>
+                    <span style={{background:p.statut==='payé'?'#43e9e9':'#3b82f6',color:p.statut==='payé'?'#181f36':'#fff',borderRadius:8,padding:'2px 10px',fontWeight:700}}>
                       {p.statut==='payé'?'Payé':(p.statut==='retard'?'En retard':p.statut)}
                     </span>
                   </td>
@@ -276,7 +272,7 @@ export default function DetailEcole() {
       </div>
       <div style={{marginTop:32,display:'flex',gap:18,justifyContent:'flex-end'}}>
         <button
-          style={{background:'#e94560',color:'#fff',border:'none',borderRadius:8,padding:'10px 24px',fontWeight:800,fontSize:17,cursor:'pointer',opacity:ecole.status==='bloqué'?0.5:1}}
+          style={{background:'#3b82f6',color:'#fff',border:'none',borderRadius:8,padding:'10px 24px',fontWeight:800,fontSize:17,cursor:'pointer',opacity:ecole.status==='bloqué'?0.5:1}}
           onClick={handleBlock}
           disabled={ecole.status==='bloqué'||updating}
         >Bloquer l’accès</button>

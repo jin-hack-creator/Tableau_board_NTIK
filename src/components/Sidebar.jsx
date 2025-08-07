@@ -28,7 +28,7 @@ const linkStyle = {
   transition: 'background 0.18s, color 0.18s',
 };
 const activeStyle = {
-  background: 'linear-gradient(120deg, #43e9e9 60%, #e94560 100%)',
+  background: 'linear-gradient(120deg, #43e9e9 60%, #3b82f6 100%)',
   color: '#181f36',
 };
 
@@ -38,7 +38,7 @@ const navItems = [
   { to: '/utilisateurs', label: 'Utilisateurs', icon: '👤' },
   { to: '/frais', label: 'Frais', icon: '💸' },
   { to: '/paiements', label: 'Paiements', icon: '💳' },
-  { to: '/parametres', label: 'Paramètres', icon: '⚙️' },
+  
 ];
 
 export default function Sidebar() {

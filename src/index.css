@@ -7,7 +7,7 @@ body {
 }
 
 a {
-  color: #e94560;
+  color: #3b82f6;
 }
 
 button, input {
@@ -20,7 +20,7 @@ button, input {
   background: hsl(337, 88%, 39%);
 }
 ::-webkit-scrollbar-thumb {
-  background: #e94560;
+  background: #3b82f6;
   border-radius: 4px;
 }
 :root {

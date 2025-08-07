@@ -17,40 +17,47 @@ export default function Frais() {
 
   return (
     <div style={{
-      background: 'linear-gradient(120deg, #181f36 60%, #10182a 100%)',
-      borderRadius: 32,
-      boxShadow: '0 8px 32px #0008',
-      padding: '40px',
-      color: '#fff',
-      border: '2px solid #e94560',
-      marginBottom: 32,
-      minHeight: 200,
+      width: '100%',
+      maxWidth: 1200,
+      color: '#fff'
     }}>
-      <h2 style={{color:'#e94560',fontWeight:800,fontSize:24,marginBottom:18}}>Frais</h2>
-      {loading ? (
-        <div style={{fontSize:17, color:'#aaa'}}>Chargement…</div>
-      ) : frais.length === 0 ? (
-        <div style={{fontSize:17, color:'#aaa'}}>Aucun frais trouvé.</div>
-      ) : (
-        <table style={{width:'100%',background:'#10182a',borderRadius:12,boxShadow:'0 2px 8px #0003',color:'#fff',fontSize:16}}>
-          <thead>
-            <tr style={{color:'#e94560',fontWeight:700}}>
-              <th style={{padding:'8px'}}>Libellé</th>
-              <th style={{padding:'8px'}}>Montant</th>
-              <th style={{padding:'8px'}}>École</th>
-            </tr>
-          </thead>
-          <tbody>
-            {frais.map(f => (
-              <tr key={f.id}>
-                <td style={{padding:'8px'}}>{f.label}</td>
-                <td style={{padding:'8px'}}>{f.montant} FCFA</td>
-                <td style={{padding:'8px'}}>{f.school_id}</td>
+      <header style={{
+        background: '#181f36',
+        padding: '24px 0 8px 0',
+        textAlign: 'center',
+        boxShadow: '0 2px 12px #0004',
+        borderBottom: '1.5px solid #223',
+        borderRadius: '16px',
+        marginBottom: '40px'
+      }}>
+        <h2 style={{ color: '#3b82f6', margin: 0, letterSpacing: 1, fontSize: 32 }}>Gestion des Frais</h2>
+      </header>
+      <main>
+        {loading ? (
+          <div style={{fontSize:17, color:'#aaa', textAlign: 'center'}}>Chargement…</div>
+        ) : frais.length === 0 ? (
+          <div style={{fontSize:17, color:'#aaa', textAlign: 'center'}}>Aucun frais trouvé.</div>
+        ) : (
+          <table style={{width:'100%',background:'#10182a',borderRadius:12,boxShadow:'0 2px 8px #0003',color:'#fff',fontSize:16}}>
+            <thead>
+              <tr style={{color:'#3b82f6',fontWeight:700}}>
+                <th style={{padding:'8px', textAlign: 'center'}}>Libellé</th>
+                <th style={{padding:'8px', textAlign: 'center'}}>Montant</th>
+                <th style={{padding:'8px', textAlign: 'center'}}>École</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {frais.map(f => (
+                <tr key={f.id}>
+                  <td style={{padding:'8px', textAlign: 'center'}}>{f.label}</td>
+                  <td style={{padding:'8px', textAlign: 'center'}}>{f.montant} FCFA</td>
+                  <td style={{padding:'8px', textAlign: 'center'}}>{f.school_id}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </main>
     </div>
   );
 }

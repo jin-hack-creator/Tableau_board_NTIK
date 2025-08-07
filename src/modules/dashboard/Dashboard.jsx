@@ -55,40 +55,22 @@ export default function Dashboard() {
 
   return (
     <div style={{
-      minHeight: 'calc(100vh - 64px)',
-      width: '100vw',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      background: 'linear-gradient(135deg, #10182a 60%, #1a2236 100%)',
-      padding: 0,
-      boxSizing: 'border-box',
+      width: '100%',
+      maxWidth: 1200,
+      color: '#fff'
     }}>
       <header style={{
-        width: '100%',
         background: '#181f36',
         padding: '24px 0 8px 0',
         textAlign: 'center',
         boxShadow: '0 2px 12px #0004',
         borderBottom: '1.5px solid #223',
-        position: 'sticky',
-        top: 0,
-        zIndex: 10
+        borderRadius: '16px',
+        marginBottom: '40px'
       }}>
-        <h2 style={{ color: '#e94560', margin: 0, letterSpacing: 1, fontSize: 32 }}>Tableau de bord NTIK</h2>
+        <h2 style={{ color: '#3b82f6', margin: 0, letterSpacing: 1, fontSize: 32 }}>Tableau de bord NTIK</h2>
       </header>
-      <main style={{
-        width: '100%',
-        maxWidth: 1200,
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '32px 8px',
-        boxSizing: 'border-box',
-      }}>
+      <main>
         <div style={{
           display: 'flex',
           gap: 32,
@@ -108,7 +90,7 @@ export default function Dashboard() {
             textAlign: 'center',
             margin: '0 0 16px 0',
           }}>
-            <strong style={{ color: '#e94560', fontSize: 18 }}>Écoles totales</strong>
+            <strong style={{ color: '#3b82f6', fontSize: 18 }}>Écoles totales</strong>
             <div style={{ fontSize: 40, fontWeight: 700, marginTop: 10 }}>{stats.totalEcoles}</div>
           </div>
           <div style={{
@@ -148,13 +130,14 @@ export default function Dashboard() {
           boxShadow:'0 2px 8px #0002',
           border:'1.5px solid #223',
           marginBottom: 32,
-          maxWidth: 900
+          maxWidth: 900,
+          margin: 'auto'
         }}>
-          <h3 style={{ color: '#e94560', marginBottom: 16, fontSize: 22 }}>Paiements récents</h3>
+          <h3 style={{ color: '#3b82f6', marginBottom: 16, fontSize: 22 }}>Paiements récents</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {stats.paiementsRecents.map((p, i) => (
               <li key={i} style={{ padding: '10px 0', borderBottom: '1px solid #223', color:'#fff', fontSize: 17 }}>
-                <span style={{ color: '#43e9e9', fontWeight: 600 }}>{p.ecole_nom}</span> — <span style={{ color: '#e94560' }}>{p.montant} €</span> le <span style={{ color: '#aaa' }}>{p.date_paiement}</span>
+                <span style={{ color: '#43e9e9', fontWeight: 600 }}>{p.ecole_nom}</span> — <span style={{ color: '#3b82f6' }}>{p.montant} €</span> le <span style={{ color: '#aaa' }}>{p.date_paiement}</span>
               </li>
             ))}
             {stats.paiementsRecents.length === 0 && <li style={{color:'#888'}}>Aucun paiement récent</li>}
@@ -167,9 +150,10 @@ export default function Dashboard() {
           padding:32,
           boxShadow:'0 2px 8px #0002',
           border:'1.5px solid #223',
-          maxWidth: 900
+          maxWidth: 900,
+          margin: 'auto'
         }}>
-          <h3 style={{ color: '#e94560', marginBottom: 16, fontSize: 22 }}>Alertes</h3>
+          <h3 style={{ color: '#3b82f6', marginBottom: 16, fontSize: 22 }}>Alertes</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {stats.alertes.map((a, i) => (
               <li key={i} style={{ padding: '10px 0', borderBottom: '1px solid #223', color:'#fff', fontSize: 17 }}>
