@@ -55,9 +55,9 @@ export default function Dashboard() {
 
   return (
     <div style={{
-      width: '100%',
       maxWidth: 1200,
-      color: '#fff'
+      color: '#fff',
+      width: '100%'
     }}>
       <header style={{
         background: '#181f36',

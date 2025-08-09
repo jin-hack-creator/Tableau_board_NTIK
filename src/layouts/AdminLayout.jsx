@@ -13,9 +13,10 @@ const AdminLayout = () => {
           padding: '20px', 
           flexGrow: 1,
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          alignItems: 'center'
         }}>
-          {/* Les pages (Dashboard, Utilisateurs, etc.) s'afficheront ici */}
+          { }
           <Outlet />
         </main>
       </div>

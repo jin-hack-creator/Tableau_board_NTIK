@@ -16,7 +16,7 @@ export default function SchoolList() {
   async function fetchSchools() {
     setLoading(true);
     const { data, error } = await supabase
-      .from('schools')
+      .from('ecoles')
       .select('*')
       .order('created_at', { ascending: false });
     setSchools(data || []);
@@ -31,9 +31,16 @@ export default function SchoolList() {
   async function handleAddSchool(e) {
     e.preventDefault();
     setAdding(true);
+    console.log('Adding school:', JSON.stringify(newSchool, null, 2));
     const { data, error } = await supabase
-      .from('schools')
-      .insert([{ ...newSchool }]);
+      .from('ecoles')
+      .insert(newSchool);
+    console.log('Supabase response:', { data, error });
+    if (error) {
+      console.error('Error adding school:', error);
+    } else if (data) {
+      fetchSchools();
+    }
     setAdding(false);
     setShowModal(false);
     setNewSchool({ name: '', address: '', phone: '', email: '' });
@@ -109,7 +116,7 @@ export default function SchoolList() {
             background:'rgba(20,24,40,0.85)',zIndex:99,
             display:'flex',alignItems:'center',justifyContent:'center',
           }}>
-            <form onSubmit={handleAddSchool} style={{
+            <form onSubmit={(e) => { e.preventDefault(); console.log('Form submitted'); handleAddSchool(e); }} style={{
               background:'linear-gradient(120deg, #181f36 60%, #10182a 100%)',
               borderRadius:32,
               boxShadow:'0 8px 32px #0008',
